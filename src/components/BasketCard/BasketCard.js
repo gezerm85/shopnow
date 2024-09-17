@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   innerContainer: {
-    gap: 8,
+    gap: 10,
     alignItems: "flex-start",
     width: '60%',
   },

@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MainStack from "../MainStack/MainStack";
 import FavoriteScreen from "../../pages/FavoriteScreen/FavoriteScreen";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import BasketButton from "../../components/BasketButton/BasketButton";
 
 const Tab = createBottomTabNavigator();
 
@@ -35,10 +36,15 @@ const MainTabs = () => {
       }}  />
       <Tab.Screen name="Favorite" component={FavoriteScreen} options={{
         title: 'Favorilerim',
+        headerRight: ()=> <BasketButton />,
         headerTitleStyle: {
             fontSize: 26,
             fontWeight: "semibold",
           },
+          headerRightContainerStyle: {
+            right: 16,
+          },
+ 
         tabBarIcon: ({color})=> <Icon name="heart" size={30} color={color}/>,
         headerTitleAlign: 'center',
       }} />

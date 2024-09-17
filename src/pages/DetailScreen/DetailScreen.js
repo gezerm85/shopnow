@@ -3,14 +3,19 @@ import React from "react";
 import { useRoute } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { addToBasket } from "../../redux/mainSlice";
+import { addToBasket, setFavorite } from "../../redux/mainSlice";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import StarRating from "react-native-star-rating-widget";
 
 const DetailScreen = () => {
   const { item } = useRoute().params;
 
   const dispatch = useDispatch();
 
-  const { basket } = useSelector((state) => state.data);
+  const { basket, favorite } = useSelector((state) => state.data);
+
+
+  const isFavorite = favorite.some((i)=>i.id === item.id)
 
   const handleOnPress = () => {
     dispatch(addToBasket(item));
@@ -18,11 +23,29 @@ const DetailScreen = () => {
 
   return (
     <View style={styles.container}>
+            <TouchableOpacity
+        onPress={() => dispatch(setFavorite(item))}
+        style={styles.icon}
+      >
+        {isFavorite ? (
+          <Icon name="heart" size={40} color={"#c45f5f"} />
+        ) : (
+          <Icon name="heart" size={40} color={"#4a4a4a"} />
+        )}
+      </TouchableOpacity>
       <View style={styles.bodyContainer}>
         <Image style={styles.images} source={{ uri: item.images[0] }} />
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.desc}>{item.description}</Text>
+        <StarRating
+          rating={item.rating}
+          onChange={() => {}}
+          starSize={36}
+          color="#FFD700"
+          starStyle={styles.star}
+        />
         <Text style={styles.price}>{item.price} $</Text>
+
       </View>
       <TouchableOpacity style={styles.btnBox} onPress={handleOnPress}>
         <Text style={styles.btnText}>Sepet Ekle</Text>
@@ -36,11 +59,18 @@ export default DetailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    position: 'relative',
+  },
+  icon:{
+    position: 'absolute',
+    right: 24,
+    top: 24,
+    zIndex: 10
   },
   bodyContainer: {
     flex: 1,
-    gap: 16,
+    gap: 20,
   },
   images: {
     width: "100%",
@@ -64,7 +94,7 @@ const styles = StyleSheet.create({
     color: '#c45f5f'
   },
   btnBox: {
-    backgroundColor: "#cb6464",
+    backgroundColor: "#c45f5f",
     alignSelf: "center",
     justifyContent: "center",
     width: "100%",

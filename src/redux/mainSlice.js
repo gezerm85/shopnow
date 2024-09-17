@@ -23,6 +23,7 @@ const initialState = {
   searchText: "",
   basket: [],
   totalAmount: 0,
+  favorite:[],
 };
 
 export const mainSlice = createSlice({
@@ -67,7 +68,6 @@ export const mainSlice = createSlice({
       );
       if (existingProduct) {
         existingProduct.count += 1;
-        // Ürünün fiyatını her artışta güncelle
         existingProduct.totalPrice += existingProduct.price;
       }
       state.totalAmount = state.basket.reduce(
@@ -81,7 +81,6 @@ export const mainSlice = createSlice({
       );
       if (existingProduct && existingProduct.count > 1) {
         existingProduct.count -= 1;
-        // Ürünün toplam fiyatını azalt
         existingProduct.totalPrice -= existingProduct.price;
       }
       state.totalAmount = state.basket.reduce(
@@ -96,6 +95,18 @@ export const mainSlice = createSlice({
         (total, item) => total + item.totalPrice, 0
       );
     },
+    setFavorite:(state, action)=>{
+      const data = action.payload
+      
+      if(state.favorite.some(item=>item.id === data.id)){
+        state.favorite = state.favorite.filter((item)=>item.id !== data.id)
+      }else{
+        state.favorite.push(data)
+      }
+    },
+    removeToFavorite:(state, action)=>{
+      state.favorite = state.favorite.filter(item=>item.id !== action.payload.id)
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -133,6 +144,8 @@ export const {
   incrementCount,
   decrementCount,
   removeToBasket,
+  setFavorite,
+  removeToFavorite,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;
