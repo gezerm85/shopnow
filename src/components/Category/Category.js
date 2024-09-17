@@ -1,9 +1,9 @@
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Category = ({ item }) => {
+const Category = ({ item , onPress}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text>{item}</Text>
     </TouchableOpacity>
   );

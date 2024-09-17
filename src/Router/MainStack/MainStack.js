@@ -35,12 +35,24 @@ const MainStack = () => {
             fontWeight: "semibold",
           },
           headerRight: () => <BasketButton />,
-          headerLeft: ()=> <LeftButton/>
+          headerLeft: () => <LeftButton />,
         }}
         name="Detail"
         component={DetailScreen}
       />
-      <Stack.Screen name="Basket" component={BasketScreen} />
+      <Stack.Screen
+        options={{
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontSize: 26,
+            fontWeight: "semibold",
+          },
+          title: 'Sepetim',
+          headerLeft: () => <LeftButton />,
+        }}
+        name="Basket"
+        component={BasketScreen}
+      />
     </Stack.Navigator>
   );
 };

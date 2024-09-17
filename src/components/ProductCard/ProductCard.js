@@ -9,6 +9,9 @@ const ProductCard = ({ item }) => {
   const handleOnPress = () => {
     nav.navigate("Detail", { item });
   };
+const data = [1,2,3,]
+  
+  
   return (
     <TouchableOpacity style={styles.container} onPress={handleOnPress}>
       <View style={styles.bodyContainer}>
@@ -23,7 +26,7 @@ const ProductCard = ({ item }) => {
           color="#FFD700"
           starStyle={styles.star}
         />
-        <Text style={styles.price}>{item.price}</Text>
+        <Text style={styles.price}>{item.price} $</Text>
       </View>
     </TouchableOpacity>
   );
@@ -31,9 +34,10 @@ const ProductCard = ({ item }) => {
 
 export default ProductCard;
 
+
 const styles = StyleSheet.create({
   container: {
-    width: "44%",
+    width: '48%',
     height: 200,
     alignItems: "center",
     justifyContent: "space-between",
@@ -42,12 +46,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 0.5,
     borderColor: '#e2dcdc',
+    
   },
   images: {
     width: '100%',
     height: '100%',
     resizeMode: "contain",
-    marginTop: 16,
   },
   star: {
     marginHorizontal: 0,
@@ -55,10 +59,9 @@ const styles = StyleSheet.create({
   innerContainer:{
     width: '100%',
     height: '50%',
-    gap: 8,
     paddingLeft: 8,
     alignItems: 'flex-start',
-    justifyContent:'space-between',
+    justifyContent:'space-evenly',
     paddingBottom: 4,
     
   },
