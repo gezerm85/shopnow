@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import MainStack from "../MainStack/MainStack";
 import { useDispatch } from "react-redux";
 import { fetchCategory, fetchData } from "../../redux/mainSlice";
+import MainTabs from "../MainTabs/MainTabs";
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <MainStack />
+      <MainTabs/>
     </NavigationContainer>
   );
 };

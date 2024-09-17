@@ -7,7 +7,7 @@ const LeftButton = () => {
   const nav = useNavigation();
   return (
     <TouchableOpacity style={styles.btnBox} onPress={() => nav.goBack()}>
-      <Icon name="arrow-left" size={30} color={"#000"} />
+      <Icon name="arrow-left" size={30} color={"#cb6464"} />
     </TouchableOpacity>
   );
 };

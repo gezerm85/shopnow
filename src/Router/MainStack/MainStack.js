@@ -13,15 +13,16 @@ const MainStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
+        headerTitleStyle:{
+          fontSize: 26,
+          fontWeight: "semibold",
+        }
       }}
     >
       <Stack.Screen
         options={{
           headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontSize: 26,
-            fontWeight: "semibold",
-          },
+          title: 'Ürünler',
           headerRight: () => <BasketButton />,
         }}
         name="Product"
@@ -30,10 +31,6 @@ const MainStack = () => {
       <Stack.Screen
         options={{
           headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontSize: 26,
-            fontWeight: "semibold",
-          },
           headerRight: () => <BasketButton />,
           headerLeft: () => <LeftButton />,
         }}
@@ -43,10 +40,6 @@ const MainStack = () => {
       <Stack.Screen
         options={{
           headerTitleAlign: "center",
-          headerTitleStyle: {
-            fontSize: 26,
-            fontWeight: "semibold",
-          },
           title: 'Sepetim',
           headerLeft: () => <LeftButton />,
         }}

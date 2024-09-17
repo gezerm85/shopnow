@@ -72,11 +72,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title:{
-    fontSize: 16
+    fontSize: 16,
+    color: '#000'
   },
   price:{
     fontSize: 14,
     fontWeight: 'bold',
+    color: '#cb6464'
     
   },
 });

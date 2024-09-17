@@ -10,7 +10,7 @@ const BasketButton = () => {
       style={styles.btnBox}
       onPress={() => nav.navigate("Basket")}
     >
-      <Icon name="basket" size={30} color={"#000"} />
+      <Icon name="basket" size={30} color={"#cb6464"} />
     </TouchableOpacity>
   );
 };
