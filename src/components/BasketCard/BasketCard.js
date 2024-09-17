@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import { StyleSheet, Text, View, Image, Alert, TouchableOpacity } from "react-native";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { decrementCount, incrementCount, removeToBasket } from "../../redux/mainSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const BasketCard = ({ item }) => {
   const basketItem = useSelector((state) =>
@@ -12,11 +12,15 @@ const BasketCard = ({ item }) => {
 
   const dispatch = useDispatch();
 
+  const nav = useNavigation()
+
   const count = basketItem ? basketItem.count : 0;
 
   const totalPrice = basketItem ? basketItem.totalPrice.toFixed(2) : 0
 
-  
+  function handleOnPress() {
+    nav.navigate("Detail", {item})
+  }
 
   const handleIncrement = () => {
     dispatch(incrementCount({ id: item.id }));
@@ -52,7 +56,7 @@ const BasketCard = ({ item }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={handleOnPress} style={styles.container}>
       <View style={styles.bodyConrainer}>
         <Image style={styles.images} source={{ uri: basketItem && basketItem.images[0] }} />
         <View style={styles.innerContainer}>
@@ -80,7 +84,7 @@ const BasketCard = ({ item }) => {
             </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
