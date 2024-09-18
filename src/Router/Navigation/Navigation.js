@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { fetchCategory, fetchData } from "../../redux/mainSlice";
+import { fetchCategory, fetchData, fetchStorgeBasket, fetchStorgeFavorites } from "../../redux/mainSlice";
 import MainTabs from "../MainTabs/MainTabs";
 
 const Navigation = () => {
@@ -10,6 +10,8 @@ const Navigation = () => {
   useEffect(() => {
     dispatch(fetchData("https://dummyjson.com/products"));
     dispatch(fetchCategory('https://dummyjson.com/products/category-list'))
+    dispatch(fetchStorgeFavorites())
+    dispatch(fetchStorgeBasket())
   }, [dispatch]);
 
   return (

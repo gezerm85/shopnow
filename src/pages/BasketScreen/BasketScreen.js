@@ -5,14 +5,35 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import BasketCard from "../../components/BasketCard/BasketCard";
+import SendToCart from "../../components/SendToCard/SendToCard";
+import { allRemoveToBasket } from "../../redux/mainSlice";
 
 const BasketScreen = () => {
   const { basket, totalAmount } = useSelector((state) => state.data);
-
   const shortenedNumber = totalAmount && totalAmount.toFixed(2);
+
+  const dispatch = useDispatch();
+
+  const animation = useRef(null);
+  const [isVisible, setIsVisible] = useState(false); 
+
+  
+
+  const playAnimation =  () => {
+    setIsVisible(true);
+    animation.current?.reset();
+    animation.current?.play();
+    dispatch(allRemoveToBasket())
+  };
+
+  const handleAnimationEnd = () => {
+    setIsVisible(false); 
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -21,23 +42,30 @@ const BasketScreen = () => {
           <Text style={styles.title}>Sepetim Boş</Text>
         </View>
       ) : (
-        <FlatList
-          data={basket}
-          renderItem={({ item }) => <BasketCard item={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ gap: 16 }}
-        />
+        <View style={styles.flatContainer}>
+          <FlatList
+            data={basket}
+            renderItem={({ item }) => <BasketCard item={item} />}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{ gap: 16 }}
+            showsVerticalScrollIndicator={false}
+          />
+          <View style={styles.bottomContainer}>
+            <Text style={styles.totalAmount}>
+              Toplam Tutar:
+              <Text style={styles.amount}> {shortenedNumber}$</Text>
+            </Text>
+            <TouchableOpacity style={styles.btnBox} onPress={playAnimation}>
+              <Text style={styles.btnText}>Ödemeyi Tamamla</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
-
-      <View style={styles.bottomContainer}>
-        <Text style={styles.totalAmount}>
-          Toplam Tutar:
-          <Text style={styles.amount}> {shortenedNumber}$</Text>
-        </Text>
-        <TouchableOpacity style={styles.btnBox}>
-          <Text style={styles.btnText}>Ödemeyi Tamamla</Text>
-        </TouchableOpacity>
-      </View>
+      {isVisible && (
+        <View style={styles.modalContainer}>
+          <SendToCart ref={animation} onAnimationFinish={handleAnimationEnd} />
+        </View>
+      )}
     </View>
   );
 };
@@ -48,10 +76,13 @@ const styles = StyleSheet.create({
     padding: 16,
     justifyContent: "space-between",
   },
-  bodyContainer:{
+  bodyContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flatContainer:{
+    flex: 1,
   },
   btnBox: {
     backgroundColor: "#cb6464",
@@ -62,10 +93,10 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginBottom: 24,
   },
-  title:{
+  title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#cb6464'
+    fontWeight: "bold",
+    color: "#cb6464",
   },
   btnText: {
     textAlign: "center",
@@ -80,10 +111,20 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     gap: 16,
+    marginTop: 16,
   },
-
   amount: {
     color: "#cb6464",
+  },
+  modalContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: '#fff', 
   },
 });
 

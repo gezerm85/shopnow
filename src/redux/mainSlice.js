@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 export const fetchData = createAsyncThunk("data/fetchData", async (url) => {
   const response = await axios.get(url);
@@ -11,6 +13,20 @@ export const fetchCategory = createAsyncThunk(
   async (url) => {
     const response = await axios.get(url);
     return response.data;
+  }
+);
+export const fetchStorgeFavorites = createAsyncThunk(
+  "Favorite/fetchStorgeFavorites",
+  async () => {
+    const response = await AsyncStorage.getItem("Favorites");
+    return response;
+  }
+);
+export const fetchStorgeBasket = createAsyncThunk(
+  "Basket/fetchStorgeBasket",
+  async () => {
+    const response = await AsyncStorage.getItem("Basket");
+    return response;
   }
 );
 
@@ -33,7 +49,7 @@ export const mainSlice = createSlice({
     setSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
     },
-    setSerachText: (state, action) => {
+    setSearchText: (state, action) => {
       state.searchText = action.payload;
     },
     addToBasket: (state, action) => {
@@ -45,7 +61,6 @@ export const mainSlice = createSlice({
 
       if (existingProduct) {
         existingProduct.count += 1;
-        // Ürünün adedi arttıkça toplam fiyatını güncelle
         existingProduct.totalPrice += productToAdd.price;
       } else {
         state.basket = [
@@ -53,13 +68,14 @@ export const mainSlice = createSlice({
           { 
             ...productToAdd, 
             count: 1, 
-            totalPrice: productToAdd.price // Yeni eklenen ürünün başlangıç fiyatı
+            totalPrice: productToAdd.price 
           }
         ];
       }
       state.totalAmount = state.basket.reduce(
         (total, item) => total + item.totalPrice, 0
       );
+      AsyncStorage.setItem("Basket", JSON.stringify(state.basket))
     },
     incrementCount: (state, action) => {
       const productId = action.payload.id;
@@ -95,6 +111,10 @@ export const mainSlice = createSlice({
         (total, item) => total + item.totalPrice, 0
       );
     },
+    allRemoveToBasket: (state)=>{
+      state.basket = []
+      AsyncStorage.removeItem("Basket")
+    },
     setFavorite:(state, action)=>{
       const data = action.payload
       
@@ -103,9 +123,11 @@ export const mainSlice = createSlice({
       }else{
         state.favorite.push(data)
       }
+      AsyncStorage.setItem("Favorites", JSON.stringify(state.favorite))
     },
     removeToFavorite:(state, action)=>{
       state.favorite = state.favorite.filter(item=>item.id !== action.payload.id)
+      AsyncStorage.setItem("Favorites", JSON.stringify(state.favorite))
     }
   },
   extraReducers: (builder) => {
@@ -133,19 +155,44 @@ export const mainSlice = createSlice({
       .addCase(fetchCategory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(fetchStorgeFavorites.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchStorgeFavorites.fulfilled, (state, action) => {
+        state.loading = false;
+        state.favorite = action.payload ? JSON.parse(action.payload) : []
+      })
+      .addCase(fetchStorgeFavorites.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchStorgeBasket.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchStorgeBasket.fulfilled, (state, action) => {
+        state.loading = false;
+        state.basket = action.payload ? JSON.parse(action.payload) : []
+      })
+      .addCase(fetchStorgeBasket.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
 export const {
   setSelectedCategory,
-  setSerachText,
+  setSearchText,
   addToBasket,
   incrementCount,
   decrementCount,
   removeToBasket,
   setFavorite,
   removeToFavorite,
+  allRemoveToBasket,
 } = mainSlice.actions;
 
 export default mainSlice.reducer;

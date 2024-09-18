@@ -12,12 +12,21 @@ const FavoriteScreen = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={favorite}
-        renderItem={({item})=><FavoritaCard item={item} />}
-        keyExtractor={(item)=>item.id.toString()}
-        contentContainerStyle={{ gap: 16 }}
-      />
+{favorite && favorite.length > 0
+ ? (
+  <FlatList
+    data={favorite}
+    renderItem={({item}) => <FavoritaCard item={item} />}
+    keyExtractor={(item) => item.id.toString()}
+    contentContainerStyle={{ gap: 16 }}
+  />
+ )
+ : (
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>Favori ürünleriniz yok.</Text>
+  </View>
+ )
+}
     </View>
   )
 }
@@ -28,5 +37,16 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     padding: 16,
-  }
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  emptyText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#cb6464'
+  },
 })

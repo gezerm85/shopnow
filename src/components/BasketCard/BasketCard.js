@@ -34,7 +34,6 @@ const BasketCard = ({ item }) => {
 
   const handleRemove = () => {
     dispatch(removeToBasket({ id: item.id }));
-    console.log("sildi");
     
   };
 

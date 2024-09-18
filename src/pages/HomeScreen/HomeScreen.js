@@ -11,9 +11,11 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Category from "../../components/Category/Category";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import { setSelectedCategory } from "../../redux/mainSlice";
+import Loading from "../../components/Loading/Loading";
+import Error from "../../components/Error/Error";
 
 const HomeScreen = () => {
-  const { product, category, selectedCategory, searchText } = useSelector(
+  const { product, category, selectedCategory, searchText, loading, error } = useSelector(
     (state) => state.data
   );
 
@@ -27,6 +29,10 @@ const HomeScreen = () => {
   const searchFilteredProducts = filteredByCategory.filter((item) =>
     item.title.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  if (loading || error) {
+    return loading ? <Loading /> : <Error />;
+  }
 
   return (
     <View style={styles.container}>
@@ -61,7 +67,7 @@ const HomeScreen = () => {
         </View>
         {searchFilteredProducts && searchFilteredProducts.length === 0 ? (
           <View style={styles.listbox}>
-            <Text style={styles.listTitle}>Ürün Bulunmamaktadır</Text>
+            <Loading/>
           </View>
         ) : (
           <View style={styles.flatListContainer}>

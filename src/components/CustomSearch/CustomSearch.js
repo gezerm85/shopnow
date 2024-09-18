@@ -1,7 +1,7 @@
 import { StyleSheet, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setSerachText } from "../../redux/mainSlice";
+import { setSearchText } from "../../redux/mainSlice";
 
 const CustomSearch = () => {
   const [query, setQuery] = useState("");
@@ -9,7 +9,7 @@ const CustomSearch = () => {
   const dispatch = useDispatch();
 
   const handleSearch = () => {
-    dispatch(setSerachText(query));
+    dispatch(setSearchText(query));
   };
 
   return (

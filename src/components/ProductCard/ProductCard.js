@@ -5,6 +5,7 @@ import StarRating from "react-native-star-rating-widget";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { setFavorite } from "../../redux/mainSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProductCard = ({ item }) => {
   const nav = useNavigation();
@@ -16,7 +17,8 @@ const ProductCard = ({ item }) => {
   };
   const { favorite } = useSelector((state) => state.data);
 
-  const isFavorite = favorite.some((i)=>i.id === item.id)
+  const isFavorite = favorite && favorite.some((i) => i.id === item.id);
+
   
 
   return (

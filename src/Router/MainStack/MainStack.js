@@ -2,8 +2,6 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../../pages/HomeScreen/HomeScreen";
 import DetailScreen from "../../pages/DetailScreen/DetailScreen";
-import BasketScreen from "../../pages/BasketScreen/BasketScreen";
-import BasketButton from "../../components/BasketButton/BasketButton";
 import LeftButton from "../../components/LeftButton/LeftButton";
 
 const Stack = createNativeStackNavigator();
@@ -22,8 +20,7 @@ const MainStack = () => {
       <Stack.Screen
         options={{
           headerTitleAlign: "center",
-          title: 'Ürünler',
-          headerRight: () => <BasketButton />,
+          title: 'Anasayfa',
         }}
         name="Product"
         component={HomeScreen}
@@ -31,20 +28,10 @@ const MainStack = () => {
       <Stack.Screen
         options={{
           headerTitleAlign: "center",
-          headerRight: () => <BasketButton />,
           headerLeft: () => <LeftButton />,
         }}
         name="Detail"
         component={DetailScreen}
-      />
-      <Stack.Screen
-        options={{
-          headerTitleAlign: "center",
-          title: 'Sepetim',
-          headerLeft: () => <LeftButton />,
-        }}
-        name="Basket"
-        component={BasketScreen}
       />
     </Stack.Navigator>
   );
